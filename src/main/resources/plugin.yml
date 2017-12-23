@@ -1,0 +1,34 @@
+name: PublicWarp
+main: com.allocinit.publicwarp.PublicWarp
+version: 1.0.0-SNAPSHOT
+description: PublicWarp
+
+commands:
+  publicwarp:
+    description: PublicWarp command
+    aliases: [pw]
+  publicwarpset:
+    description: PublicWarp set command
+    aliases: [pwset]
+  publicwarpme:
+    description: PublicWarp me command
+    aliases: [pwme]
+  publicwarplist:
+    description: PublicWarp list command
+    aliases: [pwlist]
+  publicwarpmenu:
+    description: PublicWarp menu command
+    aliases: [pwmenu]
+  publicwarpreload:
+    description: Reload the PublicWarp db
+    aliases: [pwreload]
+  
+permissions:
+  publicwarp.set:
+    description: Allows player to use the set command
+  publicwarp.use:
+    description: Allows player to use public warps
+  publicwarp.list:
+    description: Allows player to list public warps
+  publicwarp.admin:
+    description: For admin commands
