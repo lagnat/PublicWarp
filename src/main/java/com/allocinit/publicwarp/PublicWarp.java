@@ -4,9 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-
-public class PublicWarp extends JavaPlugin
-{
+public class PublicWarp extends JavaPlugin {
 	private SubCommand setCommand = new SetCommand(this);
 	private SubCommand meCommand = new MeCommand(this);
 	private SubCommand warpCommand = new WarpCommand(this);
@@ -15,15 +13,14 @@ public class PublicWarp extends JavaPlugin
 	private SubCommand reloadCommand = new ReloadCommand(this);
 
 	private PublicWarpDB db = new PublicWarpDB(this);
+	private EssentialsAPI essentials;
 
-	public PublicWarpDB getDB()
-	{
+	public PublicWarpDB getDB() {
 		return db;
 	}
 
 	@Override
-	public void onEnable()
-	{
+	public void onEnable() {
 		this.getCommand("publicwarp").setExecutor(warpCommand);
 		this.getCommand("publicwarpset").setExecutor(setCommand);
 		this.getCommand("publicwarpme").setExecutor(meCommand);
@@ -32,12 +29,9 @@ public class PublicWarp extends JavaPlugin
 		this.getCommand("publicwarpreload").setExecutor(reloadCommand);
 	}
 
-	public void writeUsage(CommandSender player)
-	{
-		player.sendMessage(
-			"[" + ChatColor.GOLD + "Public Warp" + ChatColor.WHITE + "]");
-		player.sendMessage(ChatColor.RED + "/pw " + ChatColor.GREEN
-			+ "- Alias for /publicwarp.");
+	public void writeUsage(CommandSender player) {
+		player.sendMessage("[" + ChatColor.GOLD + "Public Warp" + ChatColor.WHITE + "]");
+		player.sendMessage(ChatColor.RED + "/pw " + ChatColor.GREEN + "- Alias for /publicwarp.");
 
 		setCommand.writeUsage(player);
 		meCommand.writeUsage(player);
@@ -47,7 +41,17 @@ public class PublicWarp extends JavaPlugin
 	}
 
 	@Override
-	public void onDisable()
-	{
+	public void onDisable() {
+	}
+
+	public synchronized EssentialsAPI getEssentials() {
+		if (this.essentials == null) {
+			try {
+				essentials = new EssentialsAPI(this);
+			} catch (Throwable t) {
+			}
+		}
+
+		return essentials;
 	}
 }

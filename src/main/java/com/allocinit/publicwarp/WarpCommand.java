@@ -8,17 +8,13 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-
-public class WarpCommand extends SubCommand
-{
-	public WarpCommand(PublicWarp publicwarp)
-	{
+public class WarpCommand extends SubCommand {
+	public WarpCommand(PublicWarp publicwarp) {
 		super(publicwarp);
 	}
 
 	@Override
-	public void doCommand(CommandSender sender, String [] args) throws Exception
-	{
+	public void doCommand(CommandSender sender, String[] args) throws Exception {
 		Player player = (Player) sender;
 
 		checkPerm(player, "publicwarp.use");
@@ -28,35 +24,33 @@ public class WarpCommand extends SubCommand
 
 		OfflinePlayer warpTo = null;
 
-		List<Player> players = publicwarp.getServer().matchPlayer(args [0]);
+		List<Player> players = publicwarp.getServer().matchPlayer(args[0]);
 		if (players != null && !players.isEmpty())
 			warpTo = players.get(0);
 
 		if (warpTo == null)
-			warpTo = publicwarp.getServer().getOfflinePlayer(args [0]);
+			warpTo = publicwarp.getServer().getOfflinePlayer(args[0]);
 
 		if (warpTo == null)
-			throw new ErrorException("Unknown player " + args [0]);
+			throw new ErrorException("Unknown player " + args[0]);
 
 		doWarp(publicwarp, player, warpTo);
 	}
 
-	public static void doWarp(PublicWarp publicwarp, Player player,
-			OfflinePlayer warpTo)
-	{
+	public static void doWarp(PublicWarp publicwarp, Player player, OfflinePlayer warpTo) {
 		Location loc = publicwarp.getDB().getWarp(warpTo);
-		player.teleport(loc);
 
-		player.sendMessage("[" + ChatColor.GOLD + "Public Warp"
-			+ ChatColor.WHITE + "] " + ChatColor.GREEN + "Teleported to "
-			+ warpTo.getName() + "'s publicwarp.");
+		if (publicwarp.getEssentials() != null)
+			publicwarp.getEssentials().tp(player, loc);
+		else
+			player.teleport(loc);
+
+		player.sendMessage("[" + ChatColor.GOLD + "Public Warp" + ChatColor.WHITE + "] " + ChatColor.GREEN
+				+ "Teleported to " + warpTo.getName() + "'s publicwarp.");
 	}
 
 	@Override
-	public void writeUsage(CommandSender player)
-	{
-		player.sendMessage(ChatColor.RED + "/pw PLAYER " + ChatColor.GREEN
-			+ "- Go to PLAYER's publicwarp.");
+	public void writeUsage(CommandSender player) {
+		player.sendMessage(ChatColor.RED + "/pw PLAYER " + ChatColor.GREEN + "- Go to PLAYER's publicwarp.");
 	}
-
 }
